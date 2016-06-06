@@ -60,7 +60,7 @@ Fortunately, you don't need to change any the scripts used for configure and dep
 另外，注意的是kafka/bin目录下的kafka文件：
 <pre>
 Home dir
-KAFKA_HOME=/usr/hdp/2.3.4.0-3485/kafka
+KAFKA_HOME=/usr/hdp/2.4.2.0-258/kafka
 </pre>
 
 ##2. 制作定制化的Kafka deb package
@@ -101,6 +101,12 @@ root# dpkg-scanpackages soft/ |gzip > soft/Packages.gz
 
 amber-agent/cache是amber自带的common service、脚本等；
 最好是手工安装agent，
+
+wget -nv http://public-repo-1.hortonworks.com/ambari/ubuntu14/2.x/updates/2.2.2.0/ambari.list -O /etc/apt/sources.list.d/ambari.list
+
+apt-key adv --recv-keys --keyserver keyserver.ubuntu.com B9733A7A07513CAD
+
+apt-get update
 
 - Install the Ambari Agent on every host in your cluster.
 <pre>
