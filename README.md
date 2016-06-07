@@ -135,7 +135,7 @@ The agent registers with the Server on start.
 
 `root@ambari3:/etc/apt# cat /etc/apt/sources.list `
 
-deb http://ambari1.local.respository soft/
+`deb http://ambari1.local.respository soft/ `
 
 
 ###4.2 Agent的Kafka服务描述
@@ -154,9 +154,9 @@ scp metainfo.xml root@ambari3.agent:/var/lib/ambari-agent/cache/stacks/HDP/2.4/s
 - 1.如果需要清除deb package的缓存，或者手工更新deb文件， 请直接操作默认的缓存目录 /var/cache/apt/archives/
 
 - 2.Agent上的脚本python:
-
+<pre>
   /var/lib/ambari-agent/cache/common-services/KAFKA/0.8.1.2.2/package/scripts
-
+</pre>
 
 ##6. Trouble Shooting
 
@@ -203,34 +203,39 @@ Note: These API calls do not uninstall the packages associated with the service 
 Before the PUT or DELETE calls, you can do a GET to ensure that the API is referring to a valid resource.
 
 ##### 1.Note all the host components associated with the service.
-
+<pre>
 curl -u admin:admin -H "X-Requested-By: ambari" -X GET  http://AMBARI_SERVER_HOST:8080/api/v1/clusters/c1/services/SERVICENAME
+</pre>
 
 ##### 2.Ensure the service is stopped (you can use the Ambari Web-UI to stop the service as well)
 
 Stop the whole service (ensure correct values are provided for AMBARI_SERVER_HOST, SERVICE_NAME):
-
+<pre>
 curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Stop Service"},"Body":{"ServiceInfo":{"state":"INSTALLED"}}}' http://AMBARI_SERVER_HOST:8080/api/v1/clusters/c1/services/SERVICE_NAME
-
+</pre>
 
 Stop individual components (ensure correct values are provided for AMBARI_SERVER_HOST, HOSTNAME, COMPONENT_NAME):
 
-
+<pre>
 curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Stop Component"},"Body":{"HostRoles":{"state":"INSTALLED"}}}' http://AMBARI_SERVER_HOST:8080/api/v1/clusters/c1/hosts/HOSTNAME/host_components/COMPONENT_NAME
-
+</pre>
 
 Stop all component instances (ensure correct values are provided for AMBARI_SERVER_HOST, SERVICE_NAME, COMPONENT_NAME) - just another way to stop Service members:
-
+<pre>
 curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"context":"Stop All Components"},"Body":{"ServiceComponentInfo":{"state":"INSTALLED"}}}' http://AMBARI_SERVER_HOST:8080/api/v1/clusters/c1/services/SERVICE_NAME/components/COMPONENT_NAME
+</pre>
 
 #####3.Delete the whole SERVICE
-
+<pre>
 curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE  http://AMBARI_SERVER_HOST:8080/api/v1/clusters/c1/services/SERVICENAME
+</pre>
 
 #####4.Ubuntu NTP disable
+<pre>
 root@# echo 'never' > /sys/kernel/mm/transparent_hugepage/enabled
 root@# cat /sys/kernel/mm/transparent_hugepage/enabled
 always madvise [never]
 root@# echo 'never' > /sys/kernel/mm/transparent_hugepage/defrag
 root@# cat /sys/kernel/mm/transparent_hugepage/defrag
 always madvise [never]
+</pre>
