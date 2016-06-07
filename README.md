@@ -227,3 +227,10 @@ curl -u admin:admin -H "X-Requested-By: ambari" -X PUT -d '{"RequestInfo":{"cont
 
 curl -u admin:admin -H "X-Requested-By: ambari" -X DELETE  http://AMBARI_SERVER_HOST:8080/api/v1/clusters/c1/services/SERVICENAME
 
+#####4.Ubuntu NTP disable
+root@# echo 'never' > /sys/kernel/mm/transparent_hugepage/enabled
+root@# cat /sys/kernel/mm/transparent_hugepage/enabled
+always madvise [never]
+root@# echo 'never' > /sys/kernel/mm/transparent_hugepage/defrag
+root@# cat /sys/kernel/mm/transparent_hugepage/defrag
+always madvise [never]
