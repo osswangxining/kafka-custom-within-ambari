@@ -9,6 +9,8 @@ The following steps provide the guide on how to upgrade Kafka from pre-built 0.8
 
 Fortunately, you don't need to change any the scripts used for configure and deploy Kafka old version in this scenario.
 
+See the info about Kafka Zookeeper directoties from <a href="zkdirs.md">here</a>.
+
 ##1. 定制Stack下的KAFKA service的配置描述文件metainfo.xml
 
 /var/lib/ambari-server/resources/stacks/HDP/2.4/services/KAFKA
