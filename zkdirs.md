@@ -66,3 +66,25 @@ When a consumer starts, it does the following:
 - 3.Register a watch on changes (new brokers joining or any existing brokers leaving) under the broker id registry. (Each change triggers rebalancing among all consumers in all consumer groups.)
 - 4.If the consumer creates a message stream using a topic filter, it also registers a watch on changes (new topics being added) under the broker topic registry. (Each change will trigger re-evaluation of the available topics to determine which topics are allowed by the topic filter. A new allowed topic will trigger rebalancing among all consumers within the consumer group.)
 - 5.Force itself to rebalance within in its consumer group.
+
+
+##Consumer rebalancing algorithm
+The consumer rebalancing algorithms allows all the consumers in a group to come into consensus on which consumer is consuming which partitions. Consumer rebalancing is triggered on each addition or removal of both broker nodes and other consumers within the same group. For a given topic and a given consumer group, broker partitions are divided evenly among consumers within the group. 
+
+<b>A partition is always consumed by a single consumer.</b> This design simplifies the implementation. Had we allowed a partition to be concurrently consumed by multiple consumers, there would be contention on the partition and some kind of locking would be required. If there are more consumers than partitions, some consumers won't get any data at all. During rebalancing, we try to assign partitions to consumers in such a way that reduces the number of broker nodes each consumer has to connect to.
+
+Each consumer does the following during rebalancing:
+
+-   1.For each topic T that Ci subscribes to
+-   2.let PT be all partitions producing topic T
+-   3.let CG be all consumers in the same group as Ci that consume topic T
+-   4.sort PT (so partitions on the same broker are clustered together)
+-   5.sort CG
+-   6.let i be the index position of Ci in CG and let N = size(PT)/size(CG)
+-   7.assign partitions from i*N to (i+1)*N - 1 to consumer Ci
+-   8.remove current entries owned by Ci from the partition owner registry
+-   9.add newly assigned partitions to the partition owner registry
+
+(we may need to re-try this until the original partition owner releases its ownership)
+When rebalancing is triggered at one consumer, rebalancing should be triggered in other consumers within the same group about the same time.
+
