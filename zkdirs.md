@@ -89,10 +89,10 @@ Each consumer does the following during rebalancing:
 When rebalancing is triggered at one consumer, rebalancing should be triggered in other consumers within the same group about the same time.
 
 
-## How to clean the topics which are marked for deletion?
+## How to clean the topics which are marked for deletion
 - 1.Delete topic folder from Kafka broker machine.
 
-<pre>root@ambari4:/kafka-logs# rm -rf TBDeletedTopic-* </pre>
+<pre> /kafka-logs# rm -rf TBDeletedTopic-* </pre>
 
 - 2.Login to zookeeper and -
 
