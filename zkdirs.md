@@ -48,7 +48,6 @@ Consumers track the maximum offset they have consumed in each partition. This va
 Each broker partition is consumed by a single consumer within a given consumer group. The consumer must establish its ownership of a given partition before any consumption can begin. To establish its ownership, a consumer writes its own id in an ephemeral node under the particular broker partition it is claiming.
 <pre>/consumers/[group_id]/owners/[topic]/[partition_id] --> consumer_node_id (ephemeral node)</pre>
 
-
 ## Broker node registration
 The broker nodes are basically independent, so they only publish information about what they have. When a broker joins, it registers itself under the broker node registry directory and writes information about its host name and port. 
 
