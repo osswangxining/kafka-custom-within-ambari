@@ -32,16 +32,17 @@ The consumers in a group divide up the partitions as fairly as possible, each pa
 In addition to the group_id which is shared by all consumers in a group, each consumer is given a transient, unique consumer_id (of the form hostname:uuid) for identification purposes. Consumer ids are registered in the following directory.
 <pre>/consumers/[group_id]/ids/[consumer_id] --> 
 {"version":...,"subscription":{...:...},"pattern":...,"timestamp":...} (ephemeral node)</pre>
-Each of the consumers in the group registers under its group and creates a znode with its consumer_id. The value of the znode contains a map of &lt;topic, streams>. This id is simply used to identify each of the consumers which is currently active within a group. This is an ephemeral node so it will disappear if the consumer process dies.
+Each of the consumers in the group registers under its group and creates a znode with its consumer_id. The value of the znode contains a map of &lt;topic, streams>. 
+This id is simply used to identify each of the consumers which is currently active within a group. This is an ephemeral node so it will disappear if the consumer process dies.
 
-### Consumer Offsets
+## Consumer Offsets
 
 Consumers track the maximum offset they have consumed in each partition. This value is stored in a ZooKeeper directory if offsets.storage=zookeeper.
 <pre>/consumers/[group_id]/offsets/[topic]/[partition_id] --> offset_counter_value ((persistent node)</pre>
 
-- ** The consumer offsets stored in Zookeeper will not migrated to the target Kafka.
+-The consumer offsets stored in Zookeeper will not migrated to the target Kafka.
 
-- ** The consumer offsets stored in Kafka internal topic (__consumer_offsets) will also not migrated to the target Kafka.
+-The consumer offsets stored in Kafka internal topic (__consumer_offsets) will also not migrated to the target Kafka.
 
 
 ### Partition Owner registry
