@@ -37,3 +37,10 @@ This id is simply used to identify each of the consumers which is currently acti
 
 
 ## Consumer Offsets
+Consumers track the maximum offset they have consumed in each partition. This value is stored in a ZooKeeper directory if offsets.storage=zookeeper.
+<pre>/consumers/[group_id]/offsets/[topic]/[partition_id] --> offset_counter_value ((persistent node)</pre>
+
+-The consumer offsets stored in Zookeeper will not migrated to the target Kafka.
+
+-The consumer offsets stored in Kafka internal topic (__consumer_offsets) will also not migrated to the target Kafka.
+
