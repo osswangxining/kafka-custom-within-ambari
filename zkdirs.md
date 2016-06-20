@@ -56,3 +56,13 @@ The broker nodes are basically independent, so they only publish information abo
 itself under the broker node registry directory and writes information about its host name and port. 
 
 The broker also register the list of existing topics and their logical partitions in the broker topic registry. New topics are registered dynamically when they are created on the broker.
+
+
+## Consumer registration algorithm
+When a consumer starts, it does the following:
+
+- 1.Register itself in the consumer id registry under its group.
+- 2.Register a watch on changes (new consumers joining or any existing consumers leaving) under the consumer id registry. (Each change triggers rebalancing among all consumers within the group to which the changed consumer belongs.)
+- 3.Register a watch on changes (new brokers joining or any existing brokers leaving) under the broker id registry. (Each change triggers rebalancing among all consumers in all consumer groups.)
+- 4.If the consumer creates a message stream using a topic filter, it also registers a watch on changes (new topics being added) under the broker topic registry. (Each change will trigger re-evaluation of the available topics to determine which topics are allowed by the topic filter. A new allowed topic will trigger rebalancing among all consumers within the consumer group.)
+- 5.Force itself to rebalance within in its consumer group.
