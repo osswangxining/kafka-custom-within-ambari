@@ -32,25 +32,28 @@ The consumers in a group divide up the partitions as fairly as possible, each pa
 In addition to the group_id which is shared by all consumers in a group, each consumer is given a transient, unique consumer_id (of the form hostname:uuid) for identification purposes. Consumer ids are registered in the following directory.
 <pre>/consumers/[group_id]/ids/[consumer_id] --> 
 {"version":...,"subscription":{...:...},"pattern":...,"timestamp":...} (ephemeral node)</pre>
-Each of the consumers in the group registers under its group and creates a znode with its consumer_id. The value of the znode contains a map of &lt;topic, #streams>. This id is simply used to identify each of the consumers which is currently active within a group. This is an ephemeral node so it will disappear if the consumer process dies.
+Each of the consumers in the group registers under its group and creates a znode with its consumer_id. The value of the znode contains a map of &lt;topic, streams>. 
+This id is simply used to identify each of the consumers which is currently active within a group. This is an ephemeral node so it will disappear if the consumer process dies.
 
 
 ## Consumer Offsets
 Consumers track the maximum offset they have consumed in each partition. This value is stored in a ZooKeeper directory if offsets.storage=zookeeper.
 <pre>/consumers/[group_id]/offsets/[topic]/[partition_id] --> offset_counter_value ((persistent node)</pre>
 
-** The consumer offsets stored in Zookeeper will not migrated to the target Kafka.
+-The consumer offsets stored in Zookeeper will not migrated to the target Kafka.
 
-** The consumer offsets stored in Kafka internal topic (__consumer_offsets) will also not migrated to the target Kafka.
+-The consumer offsets stored in Kafka internal topic (__consumer_offsets) will also not migrated to the target Kafka.
 
 
 ## Partition Owner registry
+
 Each broker partition is consumed by a single consumer within a given consumer group. The consumer must establish its ownership of a given partition before any consumption can begin. To establish its ownership, a consumer writes its own id in an ephemeral node under the particular broker partition it is claiming.
 <pre>/consumers/[group_id]/owners/[topic]/[partition_id] --> consumer_node_id (ephemeral node)</pre>
 
-
 ## Broker node registration
-The broker nodes are basically independent, so they only publish information about what they have. When a broker joins, it registers itself under the broker node registry directory and writes information about its host name and port. 
+
+The broker nodes are basically independent, so they only publish information about what they have. When a broker joins, it registers 
+itself under the broker node registry directory and writes information about its host name and port. 
 
 The broker also register the list of existing topics and their logical partitions in the broker topic registry. New topics are registered dynamically when they are created on the broker.
 
@@ -63,7 +66,6 @@ When a consumer starts, it does the following:
 - 3.Register a watch on changes (new brokers joining or any existing brokers leaving) under the broker id registry. (Each change triggers rebalancing among all consumers in all consumer groups.)
 - 4.If the consumer creates a message stream using a topic filter, it also registers a watch on changes (new topics being added) under the broker topic registry. (Each change will trigger re-evaluation of the available topics to determine which topics are allowed by the topic filter. A new allowed topic will trigger rebalancing among all consumers within the consumer group.)
 - 5.Force itself to rebalance within in its consumer group.
-
 
 
 ##Consumer rebalancing algorithm
@@ -88,12 +90,16 @@ When rebalancing is triggered at one consumer, rebalancing should be triggered i
 
 
 ## How to clean the topics which are marked for deletion?
-
 - 1.Delete topic folder from Kafka broker machine.
-<pre>root@ambari4:/kafka-logs# rm -rf TBDeletedTopic-* </pre>
-- 2.Login to zookeeper and -
-<pre>
-root#zkcli
-rmr /brokers/topics/{topic_name}
-rmr /admin/delete_topics/{topic_name}
-</pre>
+   e.g. 
+  `:/kafka-logs# rm -rf TBDeletedTopic-* `
+
+
+- 2.Login to zookeeper and execute the following
+
+`./zkcli.sh`
+
+`rmr /brokers/topics/{topic_name}`
+
+`rmr /admin/delete_topics/{topic_name}`
+	
