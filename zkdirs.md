@@ -65,7 +65,6 @@ When a consumer starts, it does the following:
 - 5.Force itself to rebalance within in its consumer group.
 
 
-
 ##Consumer rebalancing algorithm
 The consumer rebalancing algorithms allows all the consumers in a group to come into consensus on which consumer is consuming which partitions. Consumer rebalancing is triggered on each addition or removal of both broker nodes and other consumers within the same group. For a given topic and a given consumer group, broker partitions are divided evenly among consumers within the group. 
 
@@ -88,7 +87,6 @@ When rebalancing is triggered at one consumer, rebalancing should be triggered i
 
 
 ## How to clean the topics which are marked for deletion?
-
 - 1.Delete topic folder from Kafka broker machine.
 <pre>root@ambari4:/kafka-logs# rm -rf TBDeletedTopic-* </pre>
 - 2.Login to zookeeper and -
