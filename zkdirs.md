@@ -32,7 +32,7 @@ The consumers in a group divide up the partitions as fairly as possible, each pa
 In addition to the group_id which is shared by all consumers in a group, each consumer is given a transient, unique consumer_id (of the form hostname:uuid) for identification purposes. Consumer ids are registered in the following directory.
 <pre>/consumers/[group_id]/ids/[consumer_id] --> 
 {"version":...,"subscription":{...:...},"pattern":...,"timestamp":...} (ephemeral node)</pre>
-Each of the consumers in the group registers under its group and creates a znode with its consumer_id. The value of the znode contains a map of &lt;topic, #streams>. This id is simply used to identify each of the consumers which is currently active within a group. This is an ephemeral node so it will disappear if the consumer process dies.
+Each of the consumers in the group registers under its group and creates a znode with its consumer_id. The value of the znode contains a map of &lt;topic, streams>. This id is simply used to identify each of the consumers which is currently active within a group. This is an ephemeral node so it will disappear if the consumer process dies.
 
 ### Consumer Offsets
 
