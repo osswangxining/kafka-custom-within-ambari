@@ -90,3 +90,11 @@ When rebalancing is triggered at one consumer, rebalancing should be triggered i
 
 
 ## How to clean the topics which are marked for deletion?
+- 1.Delete topic folder from Kafka broker machine, e.g. rm -rf TBDeletedTopic*
+   <pre>root@ambari4:/kafka-logs# rm -rf TBDeletedTopic-* </pre>
+- 2.Login to zookeeper and execute the following
+<pre>
+root#zkcli
+rmr /brokers/topics/{topic_name}
+rmr /admin/delete_topics/{topic_name}
+</pre>
