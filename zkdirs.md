@@ -34,7 +34,7 @@ In addition to the group_id which is shared by all consumers in a group, each co
 {"version":...,"subscription":{...:...},"pattern":...,"timestamp":...} (ephemeral node)</pre>
 Each of the consumers in the group registers under its group and creates a znode with its consumer_id. The value of the znode contains a map of &lt;topic, #streams>. This id is simply used to identify each of the consumers which is currently active within a group. This is an ephemeral node so it will disappear if the consumer process dies.
 
-## Consumer Offsets
+### Consumer Offsets
 
 Consumers track the maximum offset they have consumed in each partition. This value is stored in a ZooKeeper directory if offsets.storage=zookeeper.
 <pre>/consumers/[group_id]/offsets/[topic]/[partition_id] --> offset_counter_value ((persistent node)</pre>
@@ -44,12 +44,12 @@ Consumers track the maximum offset they have consumed in each partition. This va
 - ** The consumer offsets stored in Kafka internal topic (__consumer_offsets) will also not migrated to the target Kafka.
 
 
-## Partition Owner registry
+### Partition Owner registry
 
 Each broker partition is consumed by a single consumer within a given consumer group. The consumer must establish its ownership of a given partition before any consumption can begin. To establish its ownership, a consumer writes its own id in an ephemeral node under the particular broker partition it is claiming.
 <pre>/consumers/[group_id]/owners/[topic]/[partition_id] --> consumer_node_id (ephemeral node)</pre>
 
-## Broker node registration
+### Broker node registration
 
 The broker nodes are basically independent, so they only publish information about what they have. When a broker joins, it registers 
 itself under the broker node registry directory and writes information about its host name and port. 
@@ -57,7 +57,7 @@ itself under the broker node registry directory and writes information about its
 The broker also register the list of existing topics and their logical partitions in the broker topic registry. New topics are registered dynamically when they are created on the broker.
 
 
-## Consumer registration algorithm
+### Consumer registration algorithm
 When a consumer starts, it does the following:
 
 - 1.Register itself in the consumer id registry under its group.
