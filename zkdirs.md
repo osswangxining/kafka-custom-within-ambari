@@ -89,3 +89,4 @@ Each consumer does the following during rebalancing:
 When rebalancing is triggered at one consumer, rebalancing should be triggered in other consumers within the same group about the same time.
 
 
+## How to clean the topics which are marked for deletion?
