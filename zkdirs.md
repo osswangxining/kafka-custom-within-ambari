@@ -102,4 +102,11 @@ When rebalancing is triggered at one consumer, rebalancing should be triggered i
 `rmr /brokers/topics/{topic_name}`
 
 `rmr /admin/delete_topics/{topic_name}`
+
+## Create or Delete topic
+If there are a lot of partitions or replicators or topics, it's expensive for Kafka to manage topics. So it often throw the exceptions including open too many file handles. 
+
+Per the experience, it recommends that <20 topics will be created smoothly for 10k topics cluster within one single thread.
+
+For topic deletion, 10 topics per second is suggested using one single thread.
 	
